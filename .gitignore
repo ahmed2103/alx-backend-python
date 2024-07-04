@@ -10,8 +10,8 @@ __pycache__/
 *.env
 
 # Ignore virtual environments
-venv/
-env/
+
+myenv/
 
 # Ignore other unwanted files
 *.log
