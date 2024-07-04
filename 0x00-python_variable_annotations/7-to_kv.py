@@ -6,5 +6,5 @@ from typing import Union, Tuple
 
 
 def to_kv(k: str, v: Union[int, float]) -> Tuple[str, float]:
-    """Crazy function with no purpose except learning annotation"""
+    """Returns the string and the square of the float in a tuple"""
     return k, float(v*v)
