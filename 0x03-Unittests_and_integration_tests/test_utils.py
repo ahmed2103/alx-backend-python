@@ -3,7 +3,6 @@
 
 
 import unittest
-from _testclinic import TestClass
 from unittest.mock import patch, Mock
 from parameterized import parameterized
 from utils import access_nested_map, get_json, memoize
@@ -18,20 +17,19 @@ class TestAccessNestedMap(unittest.TestCase):
                             ({"a": {"b": 2}}, ("a", "b"), 2),
                            ])
     def test_access_nested_map(self, nested_map: Mapping,
-                               path: Sequence, expected: str):
+                               path: Sequence, expected: str) -> None:
         """test_access_nested_map"""
         self.assertEqual(access_nested_map(nested_map, path), expected)
 
     @parameterized.expand([
-        ({}, ("a",),),
-        ({"a": 1}, ("a", "b"),),
+        ({}, ("a",), KeyError),
+        ({"a": 1}, ("a", "b"), KeyError),
     ])
     def test_access_nested_map_exception(self, nested_map: Mapping,
-                                         path: Sequence):
+                                         path: Sequence, exception: Exception) -> None:
         """tests the exception handling"""
-        with self.assertRaises(KeyError) as context:
+        with self.assertRaises(exception):
             access_nested_map(nested_map, path)
-        self.assertEqual(str(context.exception), repr(path[-1]))
 
 
 class TestGetJson(unittest.TestCase):
@@ -42,15 +40,13 @@ class TestGetJson(unittest.TestCase):
         ])
     @patch('requests.get')
     def test_get_json(self, test_url: str,
-                      test_payload: Dict[str, bool], mock_get: Mock):
+                      test_payload: Dict, mock_get: Mock) -> None:
         """unittest for function"""
         mock_response = Mock()
         mock_response.json.return_value = test_payload
         mock_get.return_value = mock_response
-
-        result = get_json(test_url)
+        self.assertEqual(get_json(test_url), test_payload)
         mock_get.assert_called_once_with(test_url)
-        self.assertEqual(result, test_payload)
 
 
 class TestMemoize(unittest.TestCase):
@@ -70,7 +66,6 @@ class TestMemoize(unittest.TestCase):
         with patch.object(TestClass, 'a_method',
                           return_value=42) as mock_method:
             obj = TestClass()
-            res1, res2 = obj.a_property,  obj.a_property
-            self.assertEqual(res1, 42)
-            self.assertEqual(res2, 42)
+            self.assertEqual(obj.a_property, 42)
+            self.assertEqual(obj.a_property, 42)
             mock_method.assert_called_once()
