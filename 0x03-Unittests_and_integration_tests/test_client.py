@@ -139,7 +139,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
                 return Mock(json=lambda: cls.org_payload)
             elif url.endswith('/repos/google/repos'):
                 return Mock(json=lambda: cls.repos_payload)
-            return Mock(json=lambda: {})
+            return HTTPError
 
         cls.get_mock.side_effect = side_effect
 
