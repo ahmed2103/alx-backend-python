@@ -14,3 +14,4 @@ def batch_processing(batch_size):
         for row in batch:
             if row[3] > 25:
                 print(row)
+                return row[3]
