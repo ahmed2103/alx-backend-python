@@ -34,7 +34,6 @@ class DatabaseConnection:
 
 
 if __name__ == "__main__":
-    # Example usage
     with DatabaseConnection("users.db") as cursor:
         cursor.execute("SELECT * FROM users")
         results = cursor.fetchall()
