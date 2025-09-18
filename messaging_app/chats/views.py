@@ -4,14 +4,12 @@ from rest_framework import viewsets, status, permissions
 from .serializers import ConversationSerializer, MessageSerializer
 
 class ConversationViewSet(viewsets.ModelViewSet):
-    """viewSet for listing conversations and make new one"""
+    queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
-    lookup_field = 'conversation_id'
 
     def get_queryset(self):
-        return Conversation.objects.filter(
-            participants=self.request.user
-        ).distinct()
+        return Conversation.objects.filter(participants=self.request.user)
+
 
 
 class MessageViewSet(viewsets.ModelViewSet):
@@ -25,5 +23,5 @@ class MessageViewSet(viewsets.ModelViewSet):
         """
         user_conversations = Conversation.objects.filter(participants=self.request.user)
         return Message.objects.filter(
-            conversation__in=user_conversationsx
+            conversation__in=user_conversations
         ).select_related('sender', 'conversation').order_by('-sent_at')
