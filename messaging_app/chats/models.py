@@ -28,13 +28,20 @@ class User(AbstractUser):
     def __str__(self):
         return f"{self.email}+ {self.role}"
 
+class Conversation:
+    conversation_id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
+    participants = models.ManyToManyField(User, on_delete=models.CASCADE, related_name='conversations')
+    created_at = models.DateTimeField(auto_now_add=True)
+
 class Message:
     message_id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4, unique=True)
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
     message_body = models.TextField(null= False)
+    conversation = models.ForeignKey(
+        Conversation,
+        on_delete=models.CASCADE,
+        related_name="messages"
+    )
     sent_at = models.DateTimeField(auto_now_add=True)
 
-class Conversation:
-    conversation_id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-    participants = models.ForeignKey(User, related_name='conversations')
-    created_at = models.DateTimeField(auto_now_add=True)
+
