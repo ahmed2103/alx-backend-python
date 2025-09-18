@@ -25,5 +25,5 @@ class MessageViewSet(viewsets.ModelViewSet):
         """
         user_conversations = Conversation.objects.filter(participants=self.request.user)
         return Message.objects.filter(
-            conversation__in=user_conversations
+            conversation__in=user_conversationsx
         ).select_related('sender', 'conversation').order_by('-sent_at')
