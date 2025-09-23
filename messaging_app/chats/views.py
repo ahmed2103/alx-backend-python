@@ -1,6 +1,6 @@
-from django.core.exceptions import PermissionDenied
-from rest_framework import viewsets, permissions, status, filters
 
+from rest_framework import viewsets, permissions, status, filters
+from rest_framework.permissions import IsAuthenticated
 from .models import Conversation, Message
 from .serializers import ConversationSerializer, MessageSerializer
 from django_filters.rest_framework import DjangoFilterBackend
@@ -60,7 +60,7 @@ class MessageViewSet(viewsets.ModelViewSet):
         Send a message in a conversation
         """
         conversation_pk = self.kwargs['conversation_pk']
-        conversation = Conversation.objects.get(pk=conversation_pk)
+        conversation = Conversation.objects.get(conversation_id=conversation_pk)
         if self.request.user not in conversation.participants.all():
             print('hh')
             return Response({'message': 'You are not a participant of this conversation.'}, status= status.HTTP_403_FORBIDDEN)
