@@ -1,6 +1,28 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 import uuid
+
+class UserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError("you must provide email")
+        email = self.normalize_email(email)
+        user = self.model(email=email,**extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_active', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True')
+
+        return self.create_user(email, password, **extra_fields)
 
 
 class User(AbstractUser):
@@ -9,7 +31,7 @@ class User(AbstractUser):
         HOST = 'host', 'HOST'
         ADMIN = 'admin', 'Admin'
 
-    user_id = models.UUIDField(
+    id = models.UUIDField(
         primary_key= True,
         default=uuid.uuid4,
         editable=False,
@@ -22,15 +44,17 @@ class User(AbstractUser):
     role = models.CharField(max_length=10, choices=Roles.choices, default=Roles.GUEST)
     created_at = models.DateTimeField(auto_now_add= True)
 
+    username = None
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
+    objects = UserManager()
 
     def __str__(self):
         return f"{self.email}+ {self.role}"
 
 class Conversation(models.Model):
     conversation_id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-    participants = models.ManyToManyField(User, on_delete=models.CASCADE, related_name='conversations')
+    participants = models.ManyToManyField(User, related_name='conversations')
     created_at = models.DateTimeField(auto_now_add=True)
 
 class Message(models.Model):
