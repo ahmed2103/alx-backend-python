@@ -4,7 +4,8 @@ from rest_framework import viewsets, permissions, status, filters
 from .models import Conversation, Message
 from .serializers import ConversationSerializer, MessageSerializer
 from django_filters.rest_framework import DjangoFilterBackend
-from .permissions import IsParticipantOrOwner
+from .permissions import IsParticipantOfConversation
+from rest_framework.response import Response
 
 
 class ConversationViewSet(viewsets.ModelViewSet):
@@ -12,7 +13,7 @@ class ConversationViewSet(viewsets.ModelViewSet):
     ViewSet for listing conversations and creating new ones
     """
     serializer_class = ConversationSerializer
-    permission_classes = [IsParticipantOrOwner]
+    permission_classes = [IsParticipantOfConversation]
 
 
     def get_queryset(self):
@@ -39,7 +40,7 @@ class MessageViewSet(viewsets.ModelViewSet):
     ViewSet for listing messages and sending new ones
     """
     serializer_class = MessageSerializer
-    permission_classes = [IsParticipantOrOwner]
+    permission_classes = [IsParticipantOfConversation]
     filter_backends = [DjangoFilterBackend,filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['message_body', 'sender__first_name', 'sender__last_name']
     ordering_fields = ['sent_at']
@@ -59,9 +60,11 @@ class MessageViewSet(viewsets.ModelViewSet):
         Send a message in a conversation
         """
         conversation_pk = self.kwargs['conversation_pk']
-        try:
-            conversation = self.request.user.conversations.get(pk=conversation_pk)
-            serializer.save(sender=self.request.user, conversation=conversation)
-        except Conversation.DoesNotExist:
-            raise PermissionDenied("You are not a participant in this conversation.")
+        conversation = Conversation.objects.get(pk=conversation_pk)
+        if self.request.user not in conversation.participants.all():
+            print('hh')
+            return Response({'message': 'You are not a participant of this conversation.'}, status= status.HTTP_403_FORBIDDEN)
+        serializer.save(sender=self.request.user, conversation=conversation)
+
+
 
