@@ -1,0 +1,93 @@
+HTTP 200 OK
+Allow: GET, POST, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+[
+    {
+        "conversation_id": "29289233-573e-4bc7-95b8-fd4880bfba90",
+        "participants": [
+            {
+                "id": "1b08e469-a5cf-4e0b-b568-c59515252912",
+                "email": "guest.user@example.com",
+                "first_name": "Guest",
+                "last_name": "User",
+                "role": "guest",
+                "created_at": "2025-09-19T14:41:37.015384Z"
+            }
+        ],
+        "created_at": "2025-09-19T15:06:12.315227Z",
+        "messages": [
+            {
+                "message_id": "0a6d1a83-a8a3-4470-a27e-34945f8dd235",
+                "sender": {
+                    "id": "1b08e469-a5cf-4e0b-b568-c59515252912",
+                    "email": "guest.user@example.com",
+                    "first_name": "Guest",
+                    "last_name": "User",
+                    "role": "guest",
+                    "created_at": "2025-09-19T14:41:37.015384Z"
+                },
+                "message_body": "aaaaaaaaaaaaaa",
+                "sent_at": "2025-09-19T15:07:11.720176Z",
+                "conversation": "29289233-573e-4bc7-95b8-fd4880bfba90"
+            },
+            {
+                "message_id": "488b7635-f22c-48b3-8334-884e08a70a20",
+                "sender": {
+                    "id": "1b08e469-a5cf-4e0b-b568-c59515252912",
+                    "email": "guest.user@example.com",
+                    "first_name": "Guest",
+                    "last_name": "User",
+                    "role": "guest",
+                    "created_at": "2025-09-19T14:41:37.015384Z"
+                },
+                "message_body": "xxxxxxxxxxxxxxxxxxxxx",
+                "sent_at": "2025-09-23T15:21:36.972630Z",
+                "conversation": "29289233-573e-4bc7-95b8-fd4880bfba90"
+            },
+            {
+                "message_id": "483765ac-9e4c-4366-bc7c-46b19ca25134",
+                "sender": {
+                    "id": "1b08e469-a5cf-4e0b-b568-c59515252912",
+                    "email": "guest.user@example.com",
+                    "first_name": "Guest",
+                    "last_name": "User",
+                    "role": "guest",
+                    "created_at": "2025-09-19T14:41:37.015384Z"
+                },
+                "message_body": "ssckefn",
+                "sent_at": "2025-09-23T15:25:06.663177Z",
+                "conversation": "29289233-573e-4bc7-95b8-fd4880bfba90"
+            },
+            {
+                "message_id": "2d247501-b39d-452a-a400-219bf535499b",
+                "sender": {
+                    "id": "1b08e469-a5cf-4e0b-b568-c59515252912",
+                    "email": "guest.user@example.com",
+                    "first_name": "Guest",
+                    "last_name": "User",
+                    "role": "guest",
+                    "created_at": "2025-09-19T14:41:37.015384Z"
+                },
+                "message_body": "ssckefn",
+                "sent_at": "2025-09-23T15:26:31.832236Z",
+                "conversation": "29289233-573e-4bc7-95b8-fd4880bfba90"
+            },
+            {
+                "message_id": "94bfe1c2-ca53-4466-a91b-d2e8a1b6f994",
+                "sender": {
+                    "id": "1b08e469-a5cf-4e0b-b568-c59515252912",
+                    "email": "guest.user@example.com",
+                    "first_name": "Guest",
+                    "last_name": "User",
+                    "role": "guest",
+                    "created_at": "2025-09-19T14:41:37.015384Z"
+                },
+                "message_body": "ssckefn",
+                "sent_at": "2025-09-23T15:47:59.021076Z",
+                "conversation": "29289233-573e-4bc7-95b8-fd4880bfba90"
+            }
+        ]
+    }
+]
