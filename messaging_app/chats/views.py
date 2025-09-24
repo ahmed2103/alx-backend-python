@@ -6,6 +6,7 @@ from .serializers import ConversationSerializer, MessageSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from .permissions import IsParticipantOfConversation
 from rest_framework.response import Response
+from .pagination import MessagePagination
 
 
 class ConversationViewSet(viewsets.ModelViewSet):
@@ -41,6 +42,7 @@ class MessageViewSet(viewsets.ModelViewSet):
     """
     serializer_class = MessageSerializer
     permission_classes = [IsParticipantOfConversation]
+    pagination_class = MessagePagination
     filter_backends = [DjangoFilterBackend,filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['message_body', 'sender__first_name', 'sender__last_name']
     ordering_fields = ['sent_at']
