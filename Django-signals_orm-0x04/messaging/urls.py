@@ -3,5 +3,5 @@ from .views import DeleteUserView
 from django.urls import path
 
 urlpatterns = [
-    path('delete-user/', DeleteUserView.as_view(), name='delete-user'),
+    path('delete_user/', DeleteUserView.as_view(), name='delete-user'),
 ]

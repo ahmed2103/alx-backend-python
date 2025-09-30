@@ -21,8 +21,8 @@ def log_message_edit(sender, instance, **kwargs):
 
 @receiver(post_delete, sender=User)
 def clean_user_related_data(sender, instance, **kwargs):
-    Message.object.filter(Q(sender = instance) | Q(receiver = instance)).delete()
-    Notification.object.filter(owner = instance).delete()
-    MessageHistory.object.filter(edited_by = instance).delete()
+    Message.objects.filter(Q(sender = instance) | Q(receiver = instance)).delete()
+    Notification.objects.filter(owner = instance).delete()
+    MessageHistory.objects.filter(edited_by = instance).delete()
 
 
