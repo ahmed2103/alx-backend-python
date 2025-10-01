@@ -43,7 +43,7 @@ def get_threaded_conversation(request):
 @permission_classes([permissions.IsAuthenticated])
 def inbox(request):
     user = request.user
-    unread_messages = Message.unread.unread_for_user(request.user)
+    unread_messages = Message.unread.unread_for_user(request.user).only('id', 'sender', 'content', 'timestamp')
     return Response({"unread_count": unread_messages.count()}, status=status.HTTP_200_OK)
 
 
