@@ -1,10 +1,12 @@
 from django.db.models.query_utils import Q
 from rest_framework.decorators import api_view,permission_classes
+from django.views.decorators.cache import cache_page
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from django.contrib.auth import logout
 from .models import Message
 
+@cache_page(60)
 def build_thread(message):
     thread = {
         'id': message.id,
