@@ -32,9 +32,8 @@ def delete_user(request):
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
 def get_threaded_conversation(request):
-    sender = request.user
     messages = (Message.objects
-                .filter(Q(sender=sender) | Q(receiver=sender))
+                .filter(sender=request.user)
                 .select_related('sender', 'receiver')
                 .prefetch_related('replies__sender', 'replies__receiver'))
     threads = []
