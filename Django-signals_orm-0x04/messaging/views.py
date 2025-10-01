@@ -39,6 +39,12 @@ def get_threaded_conversation(request):
     for message in messages.filter(parent_message__isnull=True):
         threads.append(build_thread(message))
     return Response(threads, status=status.HTTP_200_OK)
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def inbox(request):
+    user = request.user
+    unread_messages = Message.unread.unread_for_user(request.user)
+    return Response({"unread_count": unread_messages.count()}, status=status.HTTP_200_OK)
 
 
 
