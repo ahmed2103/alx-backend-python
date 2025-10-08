@@ -10,7 +10,6 @@ conversations_router = routers.NestedDefaultRouter(router, r'conversations', loo
 conversations_router.register(r'messages', MessageViewSet, basename='conversation-messages')
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
     path("", include(router.urls)),
     path("", include(conversations_router.urls)),
     path("", include("chats.auth")),
