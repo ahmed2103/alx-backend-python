@@ -13,7 +13,7 @@ services:
     depends_on:
       - db
     command: >
-      sh -c "python manage.py runserver"
+      sh -c "python3 manage.py runserver"
     volumes:
       - .:/app
     networks:
