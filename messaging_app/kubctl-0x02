@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# switch from blue to green deployment
+
+kubectl apply -f  green_deployment.yaml
+
+kubectl rollout status deployment/django-green-deployment
+
+GREEN_POD_NAME=$(kubectl get pods -l app=django,version=green -o jsonpath='{.items[0].metadata.name}')
+
+kubectl logs --tail=100 $GREEN_POD_NAME
