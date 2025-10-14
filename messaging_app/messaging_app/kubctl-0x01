@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# This script scales up a deployment
+
+kubectl scale deployment messaging-app --replicas=3
+kubectl get pods
+wrk -t4x -c 100 -d 30s http://localhost:8000
+kubectl top pods
