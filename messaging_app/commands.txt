@@ -1,0 +1,4 @@
+minikube addon enable ingress
+this to install ingress controller on minikube the deafult is nginx
+kubectl apply -f ingress.yaml
+kubectl get ingress
