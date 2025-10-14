@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# script to start cluster and get info
+minikube start --driver=docker
+kubectl cluster-info
+kubectl get pods --all-namespaces
