@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-blue-deployment
+  labels:
+    app: django
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: django
+      version: green
+  template:
+    metadata:
+      labels:
+        app: django
+        version: green
+    spec:
+      containers:
+      - name: django-container
+        image: ahmed2013/django-app:v2.0
+        ports:
+        - containerPort: 8000
+        env:
+        - name: MYSQL_DATABASE
+          value: "django_db_user"
+        - name: MYSQL_USER
+          value: "none"
+        - name: DB_HOST
+          value: "localhost"
+        - name: DB_PORT
+          value: "3306"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+
+
