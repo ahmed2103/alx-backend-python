@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+kubectl apply -f blue_deployment.yaml
+kubectl rollout status deployment/django-blue-deployment
+
+curl -s -o /dev/null -w "%{http_code}\n" "$SERVICE_IP/api/"
+kubectl get pods -l app=django,version=blue -o wide

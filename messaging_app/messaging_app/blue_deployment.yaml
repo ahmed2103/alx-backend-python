@@ -6,6 +6,11 @@ metadata:
     app: django
 spec:
   replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   selector:
     matchLabels:
       app: django
@@ -18,7 +23,7 @@ spec:
     spec:
       containers:
       - name: django-container
-        image: ahmed2013/django-app:v1.0
+        image: ahmed2013/django-app:v2.0
         ports:
         - containerPort: 8000
         env:
