@@ -1,0 +1,51 @@
+pipeline {
+	agent any
+	environment{
+		VENV_DIR = '.venv'
+		REPO_URL = 'https://github.com/ahmed2103/alx-backend-python'
+		APP_DIR = 'alx-backend-python/messaging_app'
+
+	}
+	stages {
+		stage("Checkout") {
+			steps {
+				echo "Checking out source code..."
+				git branch: 'main'
+				url: ${env.REPO_URL}
+			}
+		}
+		stage{
+			steps {
+				dir("${env.APP_DIR}") {
+					echo "Setting up Python virtual environment..."
+					sh """
+						python3 -m venv ${env.VENV_DIR}
+						source ${env.VENV_DIR}/bin/activate
+						pip install --upgrade pip
+						pip install -r ${env.APP_DIR}/requirements.txt
+					"""
+				}
+			}
+		}
+		stage("Run Tests") {
+			steps {
+				dir("${env.APP_DIR}") {
+					echo "Running unit tests..."
+					sh """
+						source ${env.VENV_DIR}/bin/activate
+						mkdir -p test_reports
+						pytest tests/ --junitxml=test_reports/results.xml
+					"""
+				}
+			}
+		}
+		stage("Archive Test Results") {
+			steps {
+				dir("${env.APP_DIR}") {
+					echo "Archiving test results..."
+					junit 'test_reports/results.xml'
+				}
+			}
+		}
+	}
+}
