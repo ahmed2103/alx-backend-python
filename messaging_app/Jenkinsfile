@@ -13,12 +13,12 @@ pipeline {
 		stage("Checkout") {
 			steps {
 				echo "Checking out source code..."
-				git branch: 'main'
-				credentialsId: "${env.GITHUB_CREDENTIALS_ID}"
-				url: ${env.REPO_URL}
+				git branch: 'main',
+				credentialsId: "${env.GITHUB_CREDENTIALS_ID}",
+				url: "${env.REPO_URL}"
 			}
 		}
-		stage{
+		stage("Setup Virtual Environment") {
 			steps {
 					echo "Setting up Python virtual environment..."
 					sh """
@@ -64,6 +64,7 @@ pipeline {
 				echo "Pushing Docker image to Docker Hub..."
 				withCredentials([usernamePassword(credentialsId: "${env.DOCKERHUB_CREDENTIALS_ID}", passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
 					sh """
+						docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
 						docker tag ${env.IMAGE_NAME}:${env.IMAGE_TAG} $DOCKERHUB_USERNAME/${env.IMAGE_NAME}:${env.IMAGE_TAG}
 						docker push $DOCKERHUB_USERNAME/${env.IMAGE_NAME}:${env.IMAGE_TAG}
 					"""
