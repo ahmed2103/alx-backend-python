@@ -1,6 +1,7 @@
 pipeline {
 	agent any
 	environment{
+		GITHUB_CREDENTIALS_ID = 'github-credentials'
 		VENV_DIR = '.venv'
 		REPO_URL = 'https://github.com/ahmed2103/alx-backend-python'
 		APP_DIR = 'alx-backend-python/messaging_app'
@@ -11,20 +12,19 @@ pipeline {
 			steps {
 				echo "Checking out source code..."
 				git branch: 'main'
+				credentialsId: "${env.GITHUB_CREDENTIALS_ID}"
 				url: ${env.REPO_URL}
 			}
 		}
 		stage{
 			steps {
-				dir("${env.APP_DIR}") {
 					echo "Setting up Python virtual environment..."
 					sh """
 						python3 -m venv ${env.VENV_DIR}
 						source ${env.VENV_DIR}/bin/activate
-						pip install --upgrade pip
-						pip install -r ${env.APP_DIR}/requirements.txt
+						pip3 install --upgrade pip
+						pip3 install -r messaging_app/requirements.txt
 					"""
-				}
 			}
 		}
 		stage("Run Tests") {
